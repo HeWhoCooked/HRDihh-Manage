@@ -18,6 +18,22 @@ public class Dashboard extends javax.swing.JFrame {
     public Dashboard() {
         initComponents();
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        
+        KaryawanBT.setText("Karyawan"); 
+        KaryawanBT.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        KaryawanBT.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+    
+        AbsensiBT.setText("Absensi & Cuti"); 
+        AbsensiBT.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        AbsensiBT.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        
+        PayrollBT.setText("Payroll"); 
+        PayrollBT.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        PayrollBT.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+    
+        RotasiBT.setText("Rotasi Jabatan"); 
+        RotasiBT.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        RotasiBT.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
     }
 
     /**
@@ -91,8 +107,8 @@ public class Dashboard extends javax.swing.JFrame {
         KaryawanBT.setBackground(new java.awt.Color(255, 255, 255));
         KaryawanBT.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         KaryawanBT.setForeground(new java.awt.Color(0, 0, 0));
-        KaryawanBT.setText("Karyawan");
-        KaryawanBT.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 0, true));
+        KaryawanBT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/karyawan.png"))); // NOI18N
+        KaryawanBT.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 0, true));
         KaryawanBT.setBorderPainted(false);
         KaryawanBT.setPreferredSize(new java.awt.Dimension(450, 225));
         KaryawanBT.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -105,8 +121,8 @@ public class Dashboard extends javax.swing.JFrame {
         AbsensiBT.setBackground(new java.awt.Color(255, 255, 255));
         AbsensiBT.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         AbsensiBT.setForeground(new java.awt.Color(0, 0, 0));
-        AbsensiBT.setText("Absensi & Cuti");
-        AbsensiBT.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 0, true));
+        AbsensiBT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/calenderkecik.png"))); // NOI18N
+        AbsensiBT.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 0, true));
         AbsensiBT.setPreferredSize(new java.awt.Dimension(450, 225));
         AbsensiBT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -118,16 +134,21 @@ public class Dashboard extends javax.swing.JFrame {
         PayrollBT.setBackground(new java.awt.Color(255, 255, 255));
         PayrollBT.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         PayrollBT.setForeground(new java.awt.Color(0, 0, 0));
-        PayrollBT.setText("Payroll");
-        PayrollBT.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 0, true));
+        PayrollBT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/payroll.png"))); // NOI18N
+        PayrollBT.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 0, true));
         PayrollBT.setPreferredSize(new java.awt.Dimension(450, 225));
+        PayrollBT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PayrollBTActionPerformed(evt);
+            }
+        });
         pnlGrid.add(PayrollBT);
 
         RotasiBT.setBackground(new java.awt.Color(255, 255, 255));
         RotasiBT.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         RotasiBT.setForeground(new java.awt.Color(0, 0, 0));
-        RotasiBT.setText("Rotasi Jabatan");
-        RotasiBT.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 0, true));
+        RotasiBT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/rotasi_1.png"))); // NOI18N
+        RotasiBT.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 0, true));
         RotasiBT.setPreferredSize(new java.awt.Dimension(450, 225));
         pnlGrid.add(RotasiBT);
 
@@ -149,6 +170,10 @@ public class Dashboard extends javax.swing.JFrame {
     private void KaryawanBTMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_KaryawanBTMouseEntered
         // TODO add your handling code here:
     }//GEN-LAST:event_KaryawanBTMouseEntered
+
+    private void PayrollBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PayrollBTActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PayrollBTActionPerformed
 
     /**
      * @param args the command line arguments
