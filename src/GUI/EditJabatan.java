@@ -32,7 +32,6 @@ public class EditJabatan extends javax.swing.JFrame {
         pnlHeader = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
         BackKwnBT = new javax.swing.JButton();
         pnlTempatTabel = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -62,17 +61,15 @@ public class EditJabatan extends javax.swing.JFrame {
         pnlHeader.setLayout(new javax.swing.BoxLayout(pnlHeader, javax.swing.BoxLayout.LINE_AXIS));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/WhatsApp Image 2026-06-02 at 11.45.28.jpeg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/NamaLogo.jpeg"))); // NOI18N
         pnlHeader.add(jLabel1);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         pnlHeader.add(jPanel1);
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        pnlHeader.add(jPanel2);
-
         BackKwnBT.setBackground(new java.awt.Color(255, 255, 255));
-        BackKwnBT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/Screenshot_20260603_082214.png"))); // NOI18N
+        BackKwnBT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/ExitLogo.png"))); // NOI18N
+        BackKwnBT.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 0));
         BackKwnBT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BackKwnBTActionPerformed(evt);
@@ -127,7 +124,7 @@ public class EditJabatan extends javax.swing.JFrame {
         LabelPosisi.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         LabelPosisi.setForeground(new java.awt.Color(0, 0, 0));
         LabelPosisi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/arrow.png"))); // NOI18N
-        jPanel4.add(LabelPosisi, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 450, -1, -1));
+        jPanel4.add(LabelPosisi, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 460, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
@@ -142,7 +139,7 @@ public class EditJabatan extends javax.swing.JFrame {
         LabelPosisi3.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         LabelPosisi3.setForeground(new java.awt.Color(0, 0, 0));
         LabelPosisi3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/arrow.png"))); // NOI18N
-        jPanel4.add(LabelPosisi3, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 360, -1, -1));
+        jPanel4.add(LabelPosisi3, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 350, -1, -1));
 
         BatalJabatanBT.setBackground(new java.awt.Color(255, 255, 255));
         BatalJabatanBT.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
@@ -170,7 +167,7 @@ public class EditJabatan extends javax.swing.JFrame {
                 PosisiCBoxActionPerformed(evt);
             }
         });
-        jPanel4.add(PosisiCBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 450, 360, 50));
+        jPanel4.add(PosisiCBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 460, 360, 50));
 
         DeptCBox.setBackground(new java.awt.Color(255, 255, 255));
         DeptCBox.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
@@ -182,7 +179,7 @@ public class EditJabatan extends javax.swing.JFrame {
                 DeptCBoxActionPerformed(evt);
             }
         });
-        jPanel4.add(DeptCBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 360, 360, 50));
+        jPanel4.add(DeptCBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 350, 360, 50));
 
         jLabel12.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(0, 0, 0));
@@ -260,7 +257,6 @@ public class EditJabatan extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel pnlHeader;

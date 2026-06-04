@@ -8,14 +8,14 @@ package GUI;
  *
  * @author stevedownes
  */
-public class RotasiJabatan extends javax.swing.JFrame {
+public class TambahKaryawan extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RotasiJabatan.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TambahKaryawan.class.getName());
 
     /**
      * Creates new form Dashboard
      */
-    public RotasiJabatan() {
+    public TambahKaryawan() {
         initComponents();
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
     }
@@ -40,9 +40,16 @@ public class RotasiJabatan extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         CariBT = new javax.swing.JButton();
-        TFCariNama = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        CariDeptCBox = new javax.swing.JComboBox<>();
+        TFNamaKwn = new javax.swing.JTextField();
+        KelaminCBox = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        TFUsiaKwn = new javax.swing.JTextField();
+        TambahDeptCBox = new javax.swing.JComboBox<>();
+        jLabel10 = new javax.swing.JLabel();
+        TambahPosisiCBox = new javax.swing.JComboBox<>();
+        jLabel11 = new javax.swing.JLabel();
+        TipeCBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -88,7 +95,7 @@ public class RotasiJabatan extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(0, 0, 0));
         jLabel9.setText("Departemen:");
-        jPanel4.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, -1, -1));
+        jPanel4.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
@@ -98,23 +105,59 @@ public class RotasiJabatan extends javax.swing.JFrame {
         CariBT.setBackground(new java.awt.Color(0, 0, 0));
         CariBT.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
         CariBT.setForeground(new java.awt.Color(255, 255, 255));
-        CariBT.setText("Cari");
+        CariBT.setText("Tambah");
         CariBT.setMaximumSize(new java.awt.Dimension(93, 39));
         CariBT.setMinimumSize(new java.awt.Dimension(93, 39));
         CariBT.setPreferredSize(new java.awt.Dimension(93, 39));
-        jPanel4.add(CariBT, new org.netbeans.lib.awtextra.AbsoluteConstraints(1010, 320, 170, -1));
+        jPanel4.add(CariBT, new org.netbeans.lib.awtextra.AbsoluteConstraints(1010, 620, 170, -1));
 
-        TFCariNama.setBackground(new java.awt.Color(255, 255, 255));
-        TFCariNama.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        jPanel4.add(TFCariNama, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 60, 640, 50));
+        TFNamaKwn.setBackground(new java.awt.Color(255, 255, 255));
+        TFNamaKwn.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jPanel4.add(TFNamaKwn, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 60, 640, 50));
 
-        jTextField2.setText("jTextField1");
-        jPanel4.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 60, 640, 50));
+        KelaminCBox.setBackground(new java.awt.Color(255, 255, 255));
+        KelaminCBox.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        KelaminCBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel4.add(KelaminCBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 230, 640, 50));
 
-        CariDeptCBox.setBackground(new java.awt.Color(255, 255, 255));
-        CariDeptCBox.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
-        CariDeptCBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel4.add(CariDeptCBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 150, 640, 50));
+        jLabel4.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel4.setText("Jenis Kelamin:");
+        jPanel4.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 230, -1, -1));
+
+        jLabel5.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel5.setText("Usia:");
+        jPanel4.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, -1, -1));
+
+        TFUsiaKwn.setBackground(new java.awt.Color(255, 255, 255));
+        TFUsiaKwn.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jPanel4.add(TFUsiaKwn, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 140, 80, 50));
+
+        TambahDeptCBox.setBackground(new java.awt.Color(255, 255, 255));
+        TambahDeptCBox.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        TambahDeptCBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel4.add(TambahDeptCBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 330, 640, 50));
+
+        jLabel10.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel10.setText("Posisi:");
+        jPanel4.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 430, -1, -1));
+
+        TambahPosisiCBox.setBackground(new java.awt.Color(255, 255, 255));
+        TambahPosisiCBox.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        TambahPosisiCBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel4.add(TambahPosisiCBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 420, 640, 50));
+
+        jLabel11.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel11.setText("Tipe:");
+        jPanel4.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 530, -1, -1));
+
+        TipeCBox.setBackground(new java.awt.Color(255, 255, 255));
+        TipeCBox.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        TipeCBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "Karyawan tetap", "Magang" }));
+        jPanel4.add(TipeCBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 520, 640, 50));
 
         jPanel3.add(jPanel4);
 
@@ -151,22 +194,29 @@ public class RotasiJabatan extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new RotasiJabatan().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new TambahKaryawan().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackKwnBT;
     private javax.swing.JButton CariBT;
-    private javax.swing.JComboBox<String> CariDeptCBox;
-    private javax.swing.JTextField TFCariNama;
+    private javax.swing.JComboBox<String> KelaminCBox;
+    private javax.swing.JTextField TFNamaKwn;
+    private javax.swing.JTextField TFUsiaKwn;
+    private javax.swing.JComboBox<String> TambahDeptCBox;
+    private javax.swing.JComboBox<String> TambahPosisiCBox;
+    private javax.swing.JComboBox<String> TipeCBox;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JPanel pnlHeader;
     private javax.swing.JPanel pnlTempatTabel;
     // End of variables declaration//GEN-END:variables

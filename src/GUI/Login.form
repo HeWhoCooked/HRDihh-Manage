@@ -208,12 +208,12 @@
             <Component class="javax.swing.JLabel" name="jLabel3">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/Gambar/WhatsApp Image 2026-06-02 at 11.45.28.jpeg"/>
+                  <Image iconType="3" name="/Gambar/NamaLogo.jpeg"/>
                 </Property>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="60" y="60" width="-1" height="80"/>
+                  <AbsoluteConstraints x="50" y="80" width="-1" height="80"/>
                 </Constraint>
               </Constraints>
             </Component>
@@ -222,7 +222,7 @@
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Gambar/32568-removebg-preview.png"/>
+              <Image iconType="3" name="/Gambar/LoginPic.png"/>
             </Property>
           </Properties>
         </Component>

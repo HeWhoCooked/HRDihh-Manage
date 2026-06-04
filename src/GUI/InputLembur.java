@@ -31,7 +31,6 @@ public class InputLembur extends javax.swing.JFrame {
 
         pnlHeader = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         BackKwnBT = new javax.swing.JButton();
         pnlTempatTabel = new javax.swing.JPanel();
@@ -54,17 +53,15 @@ public class InputLembur extends javax.swing.JFrame {
         pnlHeader.setLayout(new javax.swing.BoxLayout(pnlHeader, javax.swing.BoxLayout.LINE_AXIS));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/WhatsApp Image 2026-06-02 at 11.45.28.jpeg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/NamaLogo.jpeg"))); // NOI18N
         pnlHeader.add(jLabel1);
-
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        pnlHeader.add(jPanel1);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         pnlHeader.add(jPanel2);
 
         BackKwnBT.setBackground(new java.awt.Color(255, 255, 255));
-        BackKwnBT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/Screenshot_20260603_082214.png"))); // NOI18N
+        BackKwnBT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/ExitLogo.png"))); // NOI18N
+        BackKwnBT.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 0));
         BackKwnBT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BackKwnBTActionPerformed(evt);
@@ -185,7 +182,6 @@ public class InputLembur extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;

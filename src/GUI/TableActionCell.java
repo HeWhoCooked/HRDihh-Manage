@@ -19,40 +19,60 @@ public class TableActionCell extends AbstractCellEditor implements TableCellRend
 
     public TableActionCell(JTable table) {
         
-        // LOGIKA TOMBOL "LIHAT"
-        editPanel.LihatBT.addActionListener(e -> {
-            fireEditingStopped(); // Hentikan mode edit sel tabel
+        // LOGIKA TOMBOL LIHAT
+        editPanel.btnLihat.addActionListener(e -> {
+            fireEditingStopped();
             int row = table.getSelectedRow();
-            
-            // Mengambil data dari baris yang diklik
             String nama = table.getValueAt(row, 1).toString();
             String dept = table.getValueAt(row, 2).toString();
             String posisi = table.getValueAt(row, 3).toString();
             
-            // Menampilkan Detail Data via Pop-up
-            String detailMessage = "=== DETAIL DATA KARYAWAN ===\n\n"
-                    + "Nama : " + nama + "\n"
-                    + "Departemen : " + dept + "\n"
-                    + "Jabatan : " + posisi;
-            
-            JOptionPane.showMessageDialog(table, detailMessage, "Lihat Data", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(table, "Nama: " + nama + "\nDept: " + dept + "\nPosisi: " + posisi, "Detail", JOptionPane.INFORMATION_MESSAGE);
         });
 
-        // LOGIKA TOMBOL "EDIT"
-        editPanel.EditBT.addActionListener(e -> {
+        // LOGIKA TOMBOL EDIT
+        editPanel.btnEdit.addActionListener(e -> {
             fireEditingStopped();
             int row = table.getSelectedRow();
             String nama = table.getValueAt(row, 1).toString();
+            String namaBaru = JOptionPane.showInputDialog(table, "Ubah Nama Karyawan:", nama);
+            if (namaBaru != null && !namaBaru.trim().isEmpty()) {
+                table.setValueAt(namaBaru, row, 1);
+            }
+        });
+
+        // LOGIKA TOMBOL HAPUS (DENGAN POP-UP KONFIRMASI)
+        editPanel.btnHapus.addActionListener(e -> {
+            fireEditingStopped();
+            int row = table.getSelectedRow();
+            
+            // Mengambil nama karyawan untuk memperjelas pop-up
+            String namaKaryawan = (table.getValueAt(row, 1) != null) ? table.getValueAt(row, 1).toString() : "Karyawan ini";
+            
+            // Pop-up konfirmasi sesuai permintaan Anda
+            int jawab = JOptionPane.showConfirmDialog(
+                table, 
+                "Apakah Anda yakin ingin menghapus karyawan " + namaKaryawan + "?", 
+                "Konfirmasi Hapus", 
+                JOptionPane.YES_NO_OPTION, 
+                JOptionPane.WARNING_MESSAGE
+            );
+            
+            if (jawab == JOptionPane.YES_OPTION) {
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                model.removeRow(row);
+                
+                // Menyusun ulang nomor urut setelah baris dihapus
+                for (int i = 0; i < model.getRowCount(); i++) {
+                    model.setValueAt(i + 1, i, 0);
+                }
+            }
         });
     }
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        if (isSelected) {
-            renderPanel.setBackground(table.getSelectionBackground());
-        } else {
-            renderPanel.setBackground(Color.WHITE);
-        }
+        renderPanel.setBackground(isSelected ? table.getSelectionBackground() : Color.WHITE);
         return renderPanel;
     }
 

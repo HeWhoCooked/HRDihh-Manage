@@ -18,6 +18,24 @@ public class LihatAbsensi extends javax.swing.JFrame {
     public LihatAbsensi() {
         initComponents();
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        
+        javax.swing.table.JTableHeader header = AbsensiTbl.getTableHeader();
+        
+        header.setDefaultRenderer(new javax.swing.table.DefaultTableCellRenderer() {
+            @Override
+            public java.awt.Component getTableCellRendererComponent(javax.swing.JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                
+                setBackground(new java.awt.Color(0, 0, 0));
+                setForeground(java.awt.Color.WHITE);
+                setFont(new java.awt.Font("Roboto", java.awt.Font.BOLD, 14));
+                setHorizontalAlignment(javax.swing.SwingConstants.CENTER); 
+                
+                return this;
+            }
+        });
+        
+        header.setPreferredSize(new java.awt.Dimension(header.getPreferredSize().width, 40));
     }
 
     /**
@@ -32,7 +50,6 @@ public class LihatAbsensi extends javax.swing.JFrame {
         pnlHeader = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
         BackKwnBT = new javax.swing.JButton();
         pnlTempatTabel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -46,17 +63,14 @@ public class LihatAbsensi extends javax.swing.JFrame {
         pnlHeader.setLayout(new javax.swing.BoxLayout(pnlHeader, javax.swing.BoxLayout.LINE_AXIS));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/WhatsApp Image 2026-06-02 at 11.45.28.jpeg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/NamaLogo.jpeg"))); // NOI18N
         pnlHeader.add(jLabel1);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         pnlHeader.add(jPanel1);
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        pnlHeader.add(jPanel2);
-
         BackKwnBT.setBackground(new java.awt.Color(255, 255, 255));
-        BackKwnBT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/Screenshot_20260603_082214.png"))); // NOI18N
+        BackKwnBT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/ExitLogo.png"))); // NOI18N
         BackKwnBT.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 0));
         BackKwnBT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -120,9 +134,9 @@ public class LihatAbsensi extends javax.swing.JFrame {
         AbsensiTbl.setShowGrid(true);
         jScrollPane1.setViewportView(AbsensiTbl);
         if (AbsensiTbl.getColumnModel().getColumnCount() > 0) {
-            AbsensiTbl.getColumnModel().getColumn(0).setMinWidth(35);
-            AbsensiTbl.getColumnModel().getColumn(0).setPreferredWidth(35);
-            AbsensiTbl.getColumnModel().getColumn(0).setMaxWidth(35);
+            AbsensiTbl.getColumnModel().getColumn(0).setMinWidth(50);
+            AbsensiTbl.getColumnModel().getColumn(0).setPreferredWidth(50);
+            AbsensiTbl.getColumnModel().getColumn(0).setMaxWidth(50);
         }
 
         pnlTempatTabel.add(jScrollPane1);
@@ -166,7 +180,6 @@ public class LihatAbsensi extends javax.swing.JFrame {
     private javax.swing.JButton BackKwnBT;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel pnlHeader;
     private javax.swing.JPanel pnlTempatTabel;

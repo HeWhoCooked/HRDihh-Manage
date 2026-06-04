@@ -52,6 +52,10 @@ public class InfoLengkap extends javax.swing.JFrame {
         HistoriBT = new javax.swing.JButton();
         jLabel14 = new javax.swing.JLabel();
         LabelGaji = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        LabelCuti = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        LabelTipe = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -61,7 +65,7 @@ public class InfoLengkap extends javax.swing.JFrame {
         pnlHeader.setLayout(new javax.swing.BoxLayout(pnlHeader, javax.swing.BoxLayout.LINE_AXIS));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/WhatsApp Image 2026-06-02 at 11.45.28.jpeg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/NamaLogo.jpeg"))); // NOI18N
         pnlHeader.add(jLabel1);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -71,7 +75,7 @@ public class InfoLengkap extends javax.swing.JFrame {
         pnlHeader.add(jPanel2);
 
         BackKwnBT.setBackground(new java.awt.Color(255, 255, 255));
-        BackKwnBT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/Screenshot_20260603_082214.png"))); // NOI18N
+        BackKwnBT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/ExitLogo.png"))); // NOI18N
         BackKwnBT.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 0));
         BackKwnBT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -137,12 +141,12 @@ public class InfoLengkap extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(0, 0, 0));
         jLabel13.setText("Status Aktif:");
-        jPanel4.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 530, -1, -1));
+        jPanel4.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 520, -1, -1));
 
         LabelStatus.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         LabelStatus.setForeground(new java.awt.Color(0, 0, 0));
         LabelStatus.setText("LabelStatus");
-        jPanel4.add(LabelStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 530, -1, -1));
+        jPanel4.add(LabelStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 520, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
@@ -156,17 +160,38 @@ public class InfoLengkap extends javax.swing.JFrame {
 
         HistoriBT.setBackground(new java.awt.Color(255, 255, 255));
         HistoriBT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/historyvector.png"))); // NOI18N
+        HistoriBT.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 0));
         jPanel4.add(HistoriBT, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 430, 60, 60));
 
         jLabel14.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(0, 0, 0));
         jLabel14.setText("Gaji:");
-        jPanel4.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 620, -1, -1));
+        jPanel4.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 680, -1, -1));
 
         LabelGaji.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         LabelGaji.setForeground(new java.awt.Color(0, 0, 0));
         LabelGaji.setText("LabelGaji");
-        jPanel4.add(LabelGaji, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 620, -1, -1));
+        jPanel4.add(LabelGaji, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 680, -1, -1));
+
+        jLabel15.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel15.setText("Kuota Cuti:");
+        jPanel4.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 770, -1, -1));
+
+        LabelCuti.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
+        LabelCuti.setForeground(new java.awt.Color(0, 0, 0));
+        LabelCuti.setText("LabelCuti");
+        jPanel4.add(LabelCuti, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 770, -1, -1));
+
+        jLabel12.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel12.setText("Tipe:");
+        jPanel4.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 600, -1, -1));
+
+        LabelTipe.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
+        LabelTipe.setForeground(new java.awt.Color(0, 0, 0));
+        LabelTipe.setText("LabelTipe");
+        jPanel4.add(LabelTipe, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 600, -1, -1));
 
         jPanel3.add(jPanel4);
 
@@ -209,18 +234,22 @@ public class InfoLengkap extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackKwnBT;
     private javax.swing.JButton HistoriBT;
+    private javax.swing.JLabel LabelCuti;
     private javax.swing.JLabel LabelDept;
     private javax.swing.JLabel LabelGaji;
     private javax.swing.JLabel LabelJK;
     private javax.swing.JLabel LabelNama;
     private javax.swing.JLabel LabelPosisi;
     private javax.swing.JLabel LabelStatus;
+    private javax.swing.JLabel LabelTipe;
     private javax.swing.JLabel LabelUsia;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;

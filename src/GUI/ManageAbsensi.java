@@ -54,7 +54,7 @@ public class ManageAbsensi extends javax.swing.JFrame {
         pnlHeader.setLayout(new javax.swing.BoxLayout(pnlHeader, javax.swing.BoxLayout.LINE_AXIS));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/WhatsApp Image 2026-06-02 at 11.45.28.jpeg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/NamaLogo.jpeg"))); // NOI18N
         pnlHeader.add(jLabel1);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -62,7 +62,7 @@ public class ManageAbsensi extends javax.swing.JFrame {
 
         ExitDBBT.setBackground(new java.awt.Color(255, 255, 255));
         ExitDBBT.setForeground(new java.awt.Color(255, 255, 255));
-        ExitDBBT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/Screenshot_20260603_082214.png"))); // NOI18N
+        ExitDBBT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/ExitLogo.png"))); // NOI18N
         ExitDBBT.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 0));
         ExitDBBT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
