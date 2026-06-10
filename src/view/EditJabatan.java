@@ -140,7 +140,7 @@ public class EditJabatan extends javax.swing.JFrame {
         Panah.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         Panah.setForeground(new java.awt.Color(0, 0, 0));
         Panah.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/arrow.png"))); // NOI18N
-        jPanel4.add(Panah, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 460, -1, -1));
+        jPanel4.add(Panah, new org.netbeans.lib.awtextra.AbsoluteConstraints(1010, 460, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
@@ -155,7 +155,7 @@ public class EditJabatan extends javax.swing.JFrame {
         LabelPosisi3.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         LabelPosisi3.setForeground(new java.awt.Color(0, 0, 0));
         LabelPosisi3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/arrow.png"))); // NOI18N
-        jPanel4.add(LabelPosisi3, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 350, -1, -1));
+        jPanel4.add(LabelPosisi3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1010, 350, -1, -1));
 
         BatalJabatanBT.setBackground(new java.awt.Color(255, 255, 255));
         BatalJabatanBT.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
@@ -193,7 +193,7 @@ public class EditJabatan extends javax.swing.JFrame {
                 PosisiCBoxActionPerformed(evt);
             }
         });
-        jPanel4.add(PosisiCBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 460, 360, 50));
+        jPanel4.add(PosisiCBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(1150, 460, 360, 50));
 
         DeptCBox.setBackground(new java.awt.Color(255, 255, 255));
         DeptCBox.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
@@ -205,7 +205,7 @@ public class EditJabatan extends javax.swing.JFrame {
                 DeptCBoxActionPerformed(evt);
             }
         });
-        jPanel4.add(DeptCBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 350, 360, 50));
+        jPanel4.add(DeptCBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(1150, 350, 360, 50));
 
         jLabel12.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(0, 0, 0));
