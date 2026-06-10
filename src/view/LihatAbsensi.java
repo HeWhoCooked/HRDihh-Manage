@@ -21,9 +21,9 @@ public class LihatAbsensi extends javax.swing.JFrame {
     public LihatAbsensi() {
         initComponents();
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
-        
+
         aturTabel();
-        muatRekapBulanSebelumnya();
+        muatRekapBulanIni();
 
         javax.swing.table.JTableHeader header = AbsensiTbl.getTableHeader();
 
@@ -200,10 +200,10 @@ public class LihatAbsensi extends javax.swing.JFrame {
         header.setPreferredSize(new java.awt.Dimension(header.getPreferredSize().width, 40));
     }
 
-    private void muatRekapBulanSebelumnya() {
+    private void muatRekapBulanIni() {
         LocalDate sekarang = LocalDate.now();
-        LocalDate bulanLalu = sekarang.minusMonths(1);
-        String bulan = bulanLalu.format(DateTimeFormatter.ofPattern("yyyy-MM"));
+        String bulan = sekarang.format(DateTimeFormatter.ofPattern("yyyy-MM"));
+        TanggalLB.setText("Rekap Absensi Bulan: " + bulan);
 
         List<RekapAbsensi> rekapList = AbsenController.rekapPerBulan(bulan);
         DefaultTableModel model = (DefaultTableModel) AbsensiTbl.getModel();

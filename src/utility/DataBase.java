@@ -30,8 +30,8 @@ public class DataBase {
                 // Koneksi ke database
                 koneksi = DriverManager.getConnection(URL + DB_NAME + "?useSSL=false&serverTimezone=UTC", USER, PASS);
                 buatTabel();
-                isiDataAwal();
-                inisialisasiRekapAbsensi();
+                isiDataAwal(); // akan mengisi departemen, jabatan, pengguna, dan karyawan jika kosong
+                inisialisasiRekapAbsensiBulanIni();
                 inisialisasiDataCuti();
                 System.out.println("[INFO] Koneksi database berhasil.");
             }
@@ -50,7 +50,8 @@ public class DataBase {
             "CREATE TABLE IF NOT EXISTS cuti (id INT PRIMARY KEY AUTO_INCREMENT, karyawan_id INT, tanggal_mulai VARCHAR(20), tanggal_selesai VARCHAR(20), status ENUM('Pending','Disetujui','Ditolak'), alasan TEXT, FOREIGN KEY (karyawan_id) REFERENCES karyawan(id))",
             "CREATE TABLE IF NOT EXISTS lembur (id INT PRIMARY KEY AUTO_INCREMENT, karyawan_id INT, tanggal VARCHAR(20), jam_lembur INT, FOREIGN KEY (karyawan_id) REFERENCES karyawan(id))",
             "CREATE TABLE IF NOT EXISTS absensi (id INT PRIMARY KEY AUTO_INCREMENT, karyawan_id INT, tanggal VARCHAR(20), hadir BOOLEAN, terlambat BOOLEAN, FOREIGN KEY (karyawan_id) REFERENCES karyawan(id))",
-            "CREATE TABLE IF NOT EXISTS pengguna (id INT PRIMARY KEY AUTO_INCREMENT, username VARCHAR(50) UNIQUE, password VARCHAR(255), role VARCHAR(20))"
+            "CREATE TABLE IF NOT EXISTS pengguna (id INT PRIMARY KEY AUTO_INCREMENT, username VARCHAR(50) UNIQUE, password VARCHAR(255), role VARCHAR(20))",
+            "CREATE TABLE IF NOT EXISTS rekap_absensi_bulanan (id INT PRIMARY KEY AUTO_INCREMENT, karyawan_id INT NOT NULL, bulan VARCHAR(7) NOT NULL, total_hadir INT DEFAULT 0, total_tidak_hadir INT DEFAULT 0, total_terlambat INT DEFAULT 0, FOREIGN KEY (karyawan_id) REFERENCES karyawan(id) ON DELETE CASCADE, UNIQUE KEY (karyawan_id, bulan))"
         };
         try (Statement stmt = koneksi.createStatement()) {
             for (String sql : sqls) {
@@ -62,29 +63,60 @@ public class DataBase {
 
     private static void isiDataAwal() {
         try {
-            // Cek apakah data sudah ada
-            PreparedStatement psCheck = koneksi.prepareStatement("SELECT COUNT(*) FROM pengguna");
+            // Cek apakah tabel departemen kosong (indikator data master belum ada)
+            PreparedStatement psCheck = koneksi.prepareStatement("SELECT COUNT(*) FROM departemen");
             ResultSet rs = psCheck.executeQuery();
             rs.next();
             int count = rs.getInt(1);
             if (count > 0) {
-                System.out.println("[INFO] Data awal sudah ada, skip insert.");
+                System.out.println("[INFO] Data master sudah ada, skip insert.");
                 return;
             }
-            System.out.println("[INFO] Mengisi data awal...");
+            System.out.println("[INFO] Mengisi data master departemen, jabatan, pengguna, dan karyawan...");
 
-            // Insert departemen
-            koneksi.createStatement().execute("INSERT INTO departemen (nama) VALUES ('HRD'), ('IT'), ('Keuangan'), ('Pemasaran')");
-            // Insert jabatan
-            koneksi.createStatement().execute("INSERT INTO jabatan (nama, gaji_pokok, tunjangan) VALUES "
-                    + "('Staff HRD', 5000000, 500000), ('Programmer', 7000000, 1000000), "
-                    + "('Akuntan', 6000000, 800000), ('Marketing', 5500000, 700000)");
-            // Insert user HRD
+            koneksi.createStatement().execute("INSERT INTO departemen (nama) VALUES "
+                    + "('Human Resources'), ('Technology & Product'), ('Finance & Accounting'), "
+                    + "('Marketing'), ('Sales & Business Development')");
+
+            String insertJabatan = "INSERT INTO jabatan (nama, gaji_pokok, tunjangan) VALUES "
+                    + "('HR Generalist', 5000000, 500000), "
+                    + "('Talent Acquisition Specialist', 5500000, 600000), "
+                    + "('HR Operations', 6000000, 700000), "
+                    + "('Employee Engagement', 5800000, 650000), "
+                    + "('Head of People', 15000000, 2000000), "
+                    + "('Frontend Engineer', 8000000, 1000000), "
+                    + "('Backend Engineer', 8500000, 1200000), "
+                    + "('Fullstack Engineer', 9000000, 1500000), "
+                    + "('QA Engineer', 7000000, 800000), "
+                    + "('Product Manager', 12000000, 1500000), "
+                    + "('UI/UX Designer', 8000000, 900000), "
+                    + "('CTO', 25000000, 5000000), "
+                    + "('Accountant', 6000000, 700000), "
+                    + "('Payroll Specialist', 6500000, 800000), "
+                    + "('Financial Analyst', 8000000, 1000000), "
+                    + "('CFO', 20000000, 3000000), "
+                    + "('Digital Marketer', 7000000, 800000), "
+                    + "('Content Writer', 5500000, 500000), "
+                    + "('Social Media Specialist', 6000000, 600000), "
+                    + "('SEO Specialist', 6500000, 700000), "
+                    + "('Graphic Designer', 7000000, 800000), "
+                    + "('CMO', 18000000, 2500000), "
+                    + "('SDR', 5000000, 500000), "
+                    + "('Account Executive', 7000000, 1000000), "
+                    + "('Business Development', 8000000, 1200000), "
+                    + "('Account Manager', 7500000, 1000000), "
+                    + "('Head of Sales', 18000000, 2500000)";
+
+            koneksi.createStatement().execute(insertJabatan);
+
             koneksi.createStatement().execute("INSERT INTO pengguna (username, password, role) VALUES "
-                    + "('Jaw', '123456', 'HRD'), ('Bintang Syahlevi', 'sayakanlawan', 'HRD'), ('Julian', 'juljul', 'HRD')");
-            // Insert karyawan
+                    + "('Jaw', '123456', 'HRD'), "
+                    + "('Bintang', 'sayakanlawan', 'HRD'), "
+                    + "('Julian', 'hidupjulian', 'HRD')");
+
             insertKaryawanAwal();
-            System.out.println("[INFO] Data awal berhasil dimasukkan.");
+
+            System.out.println("[INFO] Data master berhasil dimasukkan.");
         } catch (SQLException e) {
             System.err.println("[ERROR] Gagal mengisi data awal: " + e.getMessage());
             e.printStackTrace();
@@ -93,31 +125,32 @@ public class DataBase {
 
     private static void insertKaryawanAwal() throws SQLException {
         String[][] data = {
-            {"KAISYA ALMAIDJA", "20", "P", "1", "1", "Tetap", "5000000", "500000"},
-            {"RAFFA HAFIZH HAUZAAN", "21", "L", "2", "2", "Tetap", "7000000", "1000000"},
-            {"ABDE RIOS SATRIANY", "22", "L", "3", "3", "Tetap", "6000000", "800000"},
-            {"KAYLA DWI SEPTIANI", "20", "P", "4", "4", "Tetap", "5500000", "700000"},
-            {"AN'AMATUS SYAFIRA AULIA AZAHRA", "21", "P", "1", "1", "Tetap", "5000000", "500000"},
-            {"AHMAD MUSAFIQ", "22", "L", "2", "2", "Tetap", "7000000", "1000000"},
-            {"RIKA ALFIYANI", "21", "P", "3", "3", "Tetap", "6000000", "800000"},
-            {"LUCKYTA RIZQIA JUBAEDI", "20", "P", "4", "4", "Tetap", "5500000", "700000"},
-            {"AMELIA MARLIANA", "21", "P", "1", "1", "Tetap", "5000000", "500000"},
-            {"ANTHONIO OMPUSUNGGU", "23", "L", "2", "2", "Tetap", "7000000", "1000000"},
-            {"AZKA BARRA HAIDAR", "20", "L", "3", "3", "Tetap", "6000000", "800000"},
-            {"FAHMI MUBAROQ", "22", "L", "4", "4", "Tetap", "5500000", "700000"},
-            {"FIRMANSYAH ADE IRAWAN", "21", "L", "1", "1", "Tetap", "5000000", "500000"},
-            {"JAW SYANITO RIPTANTO PUTRA", "22", "L", "1", "1", "Tetap", "5000000", "500000"},
-            {"MUHAMMAD BINTANG SYAHLEVI", "21", "L", "1", "1", "Tetap", "5000000", "500000"},
-            {"MUHAMMAD ZAHRAN SYAUQI AUFA", "20", "L", "2", "2", "Tetap", "7000000", "1000000"},
-            {"RIZKY YOGA SALASA", "22", "L", "3", "3", "Tetap", "6000000", "800000"},
-            {"VINCENT SEBASTIAN HO", "21", "L", "4", "4", "Tetap", "5500000", "700000"},
-            {"YUWAN RANU PRATAMA", "20", "L", "1", "1", "Tetap", "5000000", "500000"},
-            {"FADHIL AZHAR PUTRA", "22", "L", "2", "2", "Tetap", "7000000", "1000000"},
-            {"JULIAN MANASYE NASYOK", "23", "L", "1", "1", "Tetap", "5000000", "500000"},
-            {"FABIAN ANANDA TAUFIK", "21", "L", "3", "3", "Tetap", "6000000", "800000"},
-            {"GIBRAN FERDIANSYAH", "20", "L", "4", "4", "Tetap", "5500000", "700000"},
-            {"MUHAMMAD NIZAR ISHAMUDDIN ALHANNAN", "22", "L", "1", "1", "Tetap", "5000000", "500000"},
-            {"RIZAL HERUDIN", "21", "L", "2", "2", "Tetap", "7000000", "1000000"}
+            {"Kaisya Almaidja", "20", "P", "1", "1", "Tetap", "5000000", "500000"},
+            {"Raffa Hafizh Hauzaan", "21", "L", "2", "7", "Tetap", "8500000", "1200000"},
+            {"Abde Rios Satriany", "22", "L", "3", "13", "Tetap", "6000000", "700000"},
+            {"Kayla Dwi Septiani", "20", "P", "4", "17", "Tetap", "7000000", "800000"},
+            {"An'amatus Syafira Aulia Azahra", "21", "P", "1", "3", "Tetap", "6000000", "700000"},
+            {"Ahmad Musafiq", "22", "L", "2", "8", "Tetap", "9000000", "1500000"},
+            {"Rika Alfiyani", "21", "P", "3", "14", "Tetap", "6500000", "800000"},
+            {"Luckyta Rizqia Jubaedi", "20", "P", "4", "18", "Tetap", "5500000", "500000"},
+            {"Amelia Marliana", "21", "P", "1", "2", "Tetap", "5500000", "600000"},
+            {"Anthonio Ompusunggu", "23", "L", "2", "9", "Tetap", "7000000", "800000"},
+            {"Azka Barra Haidar", "20", "L", "3", "15", "Tetap", "8000000", "1000000"},
+            {"Fahmi Mubaroq", "22", "L", "4", "19", "Tetap", "6000000", "600000"},
+            {"Firmansyah Ade Irawan", "21", "L", "1", "4", "Tetap", "5800000", "650000"},
+            {"Jaw Syanito Riptanto Putra", "22", "L", "1", "5", "Tetap", "15000000", "2000000"},
+            {"Muhammad Bintang Syahlevi", "21", "L", "1", "5", "Tetap", "15000000", "2000000"},
+            {"Muhammad Zahran Syauqi Aufa", "20", "L", "2", "10", "Tetap", "12000000", "1500000"},
+            {"Rizky Yoga Salasa", "22", "L", "3", "16", "Tetap", "20000000", "3000000"},
+            {"Vincent Sebastian Ho", "21", "L", "4", "20", "Tetap", "6500000", "700000"},
+            {"Yuwan Ranu Pratama", "20", "L", "5", "24", "Tetap", "7000000", "1000000"},
+            {"Fadhil Azhar Putra", "22", "L", "2", "11", "Tetap", "8000000", "900000"},
+            // JULIAN sebagai Head of People
+            {"Julian Manasye Nasyok", "23", "L", "1", "5", "Tetap", "15000000", "2000000"},
+            {"Fabian Ananda Taufik", "21", "L", "4", "21", "Tetap", "7000000", "800000"},
+            {"Gibran Ferdiansyah", "20", "L", "5", "26", "Tetap", "7500000", "1000000"},
+            {"Muhammad Nizar Ishamuddin Alhannan", "22", "L", "1", "1", "Tetap", "5000000", "500000"},
+            {"Rizal Herudin", "21", "L", "2", "12", "Tetap", "25000000", "5000000"}
         };
         String sql = "INSERT INTO karyawan (nama, usia, jenis_kelamin, departemen_id, jabatan_id, tipe, status_aktif, kuota_cuti, gaji_pokok, tunjangan) VALUES (?,?,?,?,?,?,1,12,?,?)";
         try (PreparedStatement ps = koneksi.prepareStatement(sql)) {
@@ -135,46 +168,42 @@ public class DataBase {
         }
     }
 
-    public static void inisialisasiRekapAbsensi() {
+    public static void inisialisasiRekapAbsensiBulanIni() {
         try {
-            // Cek apakah tabel sudah ada
-            DatabaseMetaData meta = koneksi.getMetaData();
-            ResultSet rs = meta.getTables(null, null, "rekap_absensi_bulanan", null);
-            if (!rs.next()) {
-                // Buat tabel
-                String createTable = "CREATE TABLE rekap_absensi_bulanan ("
-                        + "id INT PRIMARY KEY AUTO_INCREMENT, "
-                        + "karyawan_id INT NOT NULL, "
-                        + "bulan VARCHAR(7) NOT NULL, "
-                        + "total_hadir INT DEFAULT 0, "
-                        + "total_tidak_hadir INT DEFAULT 0, "
-                        + "total_terlambat INT DEFAULT 0, "
-                        + "FOREIGN KEY (karyawan_id) REFERENCES karyawan(id) ON DELETE CASCADE, "
-                        + "UNIQUE KEY (karyawan_id, bulan))";
-                koneksi.createStatement().execute(createTable);
+            String bulanIni = java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM"));
+            PreparedStatement psCek = koneksi.prepareStatement("SELECT COUNT(*) FROM rekap_absensi_bulanan WHERE bulan = ?");
+            psCek.setString(1, bulanIni);
+            ResultSet rs = psCek.executeQuery();
+            rs.next();
+            if (rs.getInt(1) == 0) {
+                // Hitung jumlah hari kerja yang sudah berlalu di bulan ini (sampai hari ini)
+                java.time.LocalDate today = java.time.LocalDate.now();
+                java.time.LocalDate firstDay = today.withDayOfMonth(1);
+                int totalHariKerja = 0;
+                java.time.LocalDate date = firstDay;
+                while (!date.isAfter(today)) {
+                    int dayOfWeek = date.getDayOfWeek().getValue();
+                    if (dayOfWeek != 6 && dayOfWeek != 7) { // Senin=1, Minggu=7; asumsi Sabtu=6, Minggu=7
+                        totalHariKerja++;
+                    }
+                    date = date.plusDays(1);
+                }
 
-                // Isi data contoh untuk bulan sebelumnya
-                java.time.LocalDate now = java.time.LocalDate.now();
-                java.time.LocalDate bulanLalu = now.minusMonths(1);
-                String bulan = bulanLalu.format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM"));
-
-                // Ambil semua karyawan
+                // Generate data rekap untuk setiap karyawan berdasarkan totalHariKerja yang sudah lewat
                 String ambilKaryawan = "SELECT id FROM karyawan";
                 Statement stmt = koneksi.createStatement();
                 ResultSet rsKaryawan = stmt.executeQuery(ambilKaryawan);
 
-                // Generate data contoh (random)
-                java.util.Random rand = new java.util.Random();
                 String insertSql = "INSERT INTO rekap_absensi_bulanan (karyawan_id, bulan, total_hadir, total_tidak_hadir, total_terlambat) VALUES (?, ?, ?, ?, ?)";
                 PreparedStatement ps = koneksi.prepareStatement(insertSql);
-                int totalHariKerja = 22;
+                java.util.Random rand = new java.util.Random();
                 while (rsKaryawan.next()) {
                     int id = rsKaryawan.getInt("id");
-                    int hadir = 18 + rand.nextInt(5);
+                    int hadir = rand.nextInt(totalHariKerja + 1); // 0 hingga totalHariKerja
                     int tidakHadir = totalHariKerja - hadir;
-                    int terlambat = rand.nextInt(4);
+                    int terlambat = rand.nextInt(hadir + 1); // maksimal sebanyak hadir
                     ps.setInt(1, id);
-                    ps.setString(2, bulan);
+                    ps.setString(2, bulanIni);
                     ps.setInt(3, hadir);
                     ps.setInt(4, tidakHadir);
                     ps.setInt(5, terlambat);
@@ -182,7 +211,7 @@ public class DataBase {
                 }
                 ps.close();
                 stmt.close();
-                System.out.println("[INFO] Tabel rekap_absensi_bulanan dibuat dan diisi data contoh untuk bulan " + bulan);
+                System.out.println("[INFO] Rekap absensi untuk bulan " + bulanIni + " berhasil dibuat dengan total hari kerja = " + totalHariKerja);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -271,7 +300,7 @@ public class DataBase {
         return daftar;
     }
 
-    // ========== GET KARYAWAN BY ID ==========
+    // ========== Cari Karyawan ==========
     public static Pegawai ambilKaryawanById(int id) {
         String sql = "SELECT k.*, d.nama as dept_nama, j.nama as jab_nama, j.gaji_pokok as jab_gaji, j.tunjangan as jab_tunjangan "
                 + "FROM karyawan k JOIN departemen d ON k.departemen_id=d.id "
@@ -304,6 +333,43 @@ public class DataBase {
                 return p;
             }
         } catch (SQLException e) {
+        }
+        return null;
+    }
+
+    public static Pegawai cariKaryawanByNama(String nama) {
+        String sql = "SELECT k.*, d.nama as dept_nama, j.nama as jab_nama, j.gaji_pokok as jab_gaji, j.tunjangan as jab_tunjangan "
+                + "FROM karyawan k JOIN departemen d ON k.departemen_id=d.id "
+                + "JOIN jabatan j ON k.jabatan_id=j.id WHERE k.nama = ?";
+        try (PreparedStatement ps = koneksi.prepareStatement(sql)) {
+            ps.setString(1, nama);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                Pegawai p;
+                if ("Tetap".equals(rs.getString("tipe"))) {
+                    KaryawanTetap kt = new KaryawanTetap();
+                    kt.setGajiPokok(rs.getDouble("gaji_pokok"));
+                    kt.setTunjangan(rs.getDouble("tunjangan"));
+                    p = kt;
+                } else {
+                    Magang m = new Magang();
+                    m.setUangHarian(rs.getDouble("uang_harian"));
+                    m.setHariKerja(rs.getInt("hari_kerja"));
+                    p = m;
+                }
+                p.setId(rs.getInt("id"));
+                p.setNama(rs.getString("nama"));
+                p.setUsia(rs.getInt("usia"));
+                p.setJenisKelamin(rs.getString("jenis_kelamin"));
+                p.setStatusAktif(rs.getBoolean("status_aktif"));
+                p.setKuotaCuti(rs.getInt("kuota_cuti"));
+                p.setTipe(rs.getString("tipe"));
+                p.setDepartemen(new Departemen(rs.getInt("departemen_id"), rs.getString("dept_nama")));
+                p.setJabatan(new Jabatan(rs.getInt("jabatan_id"), rs.getString("jab_nama"), rs.getDouble("jab_gaji"), rs.getDouble("jab_tunjangan")));
+                return p;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -460,40 +526,49 @@ public class DataBase {
 
     // ========== GAJI ==========
     public static double hitungBonusLembur(int karyawanId) {
-        String sql = "SELECT SUM(jam_lembur) as total FROM lembur WHERE karyawan_id=?";
+        // Hitung total jam lembur untuk bulan ini
+        String sql = "SELECT SUM(jam_lembur) as total FROM lembur WHERE karyawan_id=? AND DATE_FORMAT(tanggal, '%Y-%m') = DATE_FORMAT(CURDATE(), '%Y-%m')";
         try (PreparedStatement ps = koneksi.prepareStatement(sql)) {
             ps.setInt(1, karyawanId);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
+            if (rs.next() && rs.getInt("total") > 0) {
                 return rs.getInt("total") * 20000;
             }
         } catch (SQLException e) {
+            e.printStackTrace();
         }
         return 0;
     }
 
     public static double hitungPotonganAbsen(int karyawanId) {
-        String sql = "SELECT total_tidak_hadir FROM rekap_absensi_bulanan WHERE karyawan_id=? AND bulan = DATE_FORMAT(CURDATE(), '%Y-%m')";
+        // Ambil dari rekap_absensi_bulanan untuk bulan ini
+        String bulanIni = java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM"));
+        String sql = "SELECT total_tidak_hadir FROM rekap_absensi_bulanan WHERE karyawan_id=? AND bulan=?";
         try (PreparedStatement ps = koneksi.prepareStatement(sql)) {
             ps.setInt(1, karyawanId);
+            ps.setString(2, bulanIni);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return rs.getInt("total_tidak_hadir") * 100000;
             }
         } catch (SQLException e) {
+            e.printStackTrace();
         }
         return 0;
     }
 
     public static double hitungPotonganTerlambat(int karyawanId) {
-        String sql = "SELECT total_terlambat FROM rekap_absensi_bulanan WHERE karyawan_id=? AND bulan = DATE_FORMAT(CURDATE(), '%Y-%m')";
+        String bulanIni = java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM"));
+        String sql = "SELECT total_terlambat FROM rekap_absensi_bulanan WHERE karyawan_id=? AND bulan=?";
         try (PreparedStatement ps = koneksi.prepareStatement(sql)) {
             ps.setInt(1, karyawanId);
+            ps.setString(2, bulanIni);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return rs.getInt("total_terlambat") * 50000;
             }
         } catch (SQLException e) {
+            e.printStackTrace();
         }
         return 0;
     }

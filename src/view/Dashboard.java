@@ -195,7 +195,7 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_PayrollBTActionPerformed
 
     private void RotasiBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RotasiBTActionPerformed
-        new EditJabatan().setVisible(true);
+        new RotasiJabatan().setVisible(true);
         dispose();
     }//GEN-LAST:event_RotasiBTActionPerformed
 

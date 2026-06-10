@@ -8,8 +8,17 @@ package view;
  *
  * @author stevedownes
  */
+import controller.KaryawanController;
+import controller.RotasiController;
+import Model.Pegawai;
+import Model.Departemen;
+import Model.Jabatan;
+import javax.swing.JOptionPane;
+import java.util.List;
+
 public class EditJabatan extends javax.swing.JFrame {
-    
+
+    private int idKaryawan;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(EditJabatan.class.getName());
 
     /**
@@ -18,6 +27,13 @@ public class EditJabatan extends javax.swing.JFrame {
     public EditJabatan() {
         initComponents();
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        isiCombo();
+    }
+
+    public EditJabatan(int id) {
+        this(); 
+        this.idKaryawan = id;
+        muatData();
     }
 
     /**
@@ -42,7 +58,7 @@ public class EditJabatan extends javax.swing.JFrame {
         LabelUsia = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         LabelDept = new javax.swing.JLabel();
-        LabelPosisi = new javax.swing.JLabel();
+        Panah = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         LabelNama = new javax.swing.JLabel();
         LabelPosisi3 = new javax.swing.JLabel();
@@ -51,7 +67,7 @@ public class EditJabatan extends javax.swing.JFrame {
         PosisiCBox = new javax.swing.JComboBox<>();
         DeptCBox = new javax.swing.JComboBox<>();
         jLabel12 = new javax.swing.JLabel();
-        LabelPosisi4 = new javax.swing.JLabel();
+        LabelPosisi = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -121,10 +137,10 @@ public class EditJabatan extends javax.swing.JFrame {
         LabelDept.setText("LabelDept");
         jPanel4.add(LabelDept, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 350, -1, -1));
 
-        LabelPosisi.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
-        LabelPosisi.setForeground(new java.awt.Color(0, 0, 0));
-        LabelPosisi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/arrow.png"))); // NOI18N
-        jPanel4.add(LabelPosisi, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 460, -1, -1));
+        Panah.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
+        Panah.setForeground(new java.awt.Color(0, 0, 0));
+        Panah.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/arrow.png"))); // NOI18N
+        jPanel4.add(Panah, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 460, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
@@ -146,6 +162,11 @@ public class EditJabatan extends javax.swing.JFrame {
         BatalJabatanBT.setForeground(new java.awt.Color(0, 0, 0));
         BatalJabatanBT.setText("Batal");
         BatalJabatanBT.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+        BatalJabatanBT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BatalJabatanBTActionPerformed(evt);
+            }
+        });
         jPanel4.add(BatalJabatanBT, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 750, 170, 40));
 
         SimpanJabatanBT.setBackground(new java.awt.Color(0, 0, 0));
@@ -155,6 +176,11 @@ public class EditJabatan extends javax.swing.JFrame {
         SimpanJabatanBT.setMaximumSize(new java.awt.Dimension(93, 39));
         SimpanJabatanBT.setMinimumSize(new java.awt.Dimension(93, 39));
         SimpanJabatanBT.setPreferredSize(new java.awt.Dimension(93, 39));
+        SimpanJabatanBT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SimpanJabatanBTActionPerformed(evt);
+            }
+        });
         jPanel4.add(SimpanJabatanBT, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 750, 170, -1));
 
         PosisiCBox.setBackground(new java.awt.Color(255, 255, 255));
@@ -186,10 +212,10 @@ public class EditJabatan extends javax.swing.JFrame {
         jLabel12.setText("Posisi:");
         jPanel4.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 460, -1, -1));
 
-        LabelPosisi4.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
-        LabelPosisi4.setForeground(new java.awt.Color(0, 0, 0));
-        LabelPosisi4.setText("LabelPosisi");
-        jPanel4.add(LabelPosisi4, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 460, -1, -1));
+        LabelPosisi.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
+        LabelPosisi.setForeground(new java.awt.Color(0, 0, 0));
+        LabelPosisi.setText("LabelPosisi");
+        jPanel4.add(LabelPosisi, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 460, -1, -1));
 
         jPanel3.add(jPanel4);
 
@@ -200,8 +226,37 @@ public class EditJabatan extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void isiCombo() {
+        // Department
+        DeptCBox.removeAllItems();
+        List<Departemen> deptList = KaryawanController.daftarDepartemen();
+        for (Departemen d : deptList) {
+            DeptCBox.addItem(d.getNama());
+        }
+
+        // Position
+        PosisiCBox.removeAllItems();
+        List<Jabatan> jabList = KaryawanController.daftarJabatan();
+        for (Jabatan j : jabList) {
+            PosisiCBox.addItem(j.getNama());
+        }
+    }
+
+    private void muatData() {
+        Pegawai p = KaryawanController.cariKaryawan(idKaryawan);
+        if (p != null) {
+            LabelNama.setText(p.getNama());
+            LabelJK.setText(p.getJenisKelamin());
+            LabelUsia.setText(String.valueOf(p.getUsia()));
+            LabelDept.setText(p.getDepartemen().getNama());
+            LabelPosisi.setText(p.getJabatan().getNama());
+            DeptCBox.setSelectedItem(p.getDepartemen().getNama());
+            PosisiCBox.setSelectedItem(p.getJabatan().getNama());
+        }
+    }
     private void BackKwnBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackKwnBTActionPerformed
-        // TODO add your handling code here:
+        new ManageKaryawan().setVisible(true);
+        dispose();
     }//GEN-LAST:event_BackKwnBTActionPerformed
 
     private void PosisiCBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PosisiCBoxActionPerformed
@@ -211,6 +266,31 @@ public class EditJabatan extends javax.swing.JFrame {
     private void DeptCBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeptCBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_DeptCBoxActionPerformed
+
+    private void SimpanJabatanBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SimpanJabatanBTActionPerformed
+        String deptBaru = (String) DeptCBox.getSelectedItem();
+        String jabBaru = (String) PosisiCBox.getSelectedItem();
+        Departemen dept = KaryawanController.daftarDepartemen().stream()
+                .filter(d -> d.getNama().equals(deptBaru)).findFirst().orElse(null);
+        Jabatan jab = KaryawanController.daftarJabatan().stream()
+                .filter(j -> j.getNama().equals(jabBaru)).findFirst().orElse(null);
+        if (dept != null && jab != null) {
+            String tanggalMulai = JOptionPane.showInputDialog(this, "Masukkan tanggal mulai rotasi (yyyy-MM-dd):", "2025-06-01");
+            if (tanggalMulai != null && !tanggalMulai.isEmpty()) {
+                RotasiController.rotasiJabatan(idKaryawan, dept.getId(), jab.getId(), tanggalMulai);
+                JOptionPane.showMessageDialog(this, "Rotasi jabatan berhasil disimpan.");
+                new ManageKaryawan().setVisible(true);
+                dispose();
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Pilihan tidak valid.");
+        }
+    }//GEN-LAST:event_SimpanJabatanBTActionPerformed
+
+    private void BatalJabatanBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BatalJabatanBTActionPerformed
+        new ManageKaryawan().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_BatalJabatanBTActionPerformed
 
     /**
      * @param args the command line arguments
@@ -246,8 +326,8 @@ public class EditJabatan extends javax.swing.JFrame {
     private javax.swing.JLabel LabelNama;
     private javax.swing.JLabel LabelPosisi;
     private javax.swing.JLabel LabelPosisi3;
-    private javax.swing.JLabel LabelPosisi4;
     private javax.swing.JLabel LabelUsia;
+    private javax.swing.JLabel Panah;
     private javax.swing.JComboBox<String> PosisiCBox;
     private javax.swing.JButton SimpanJabatanBT;
     private javax.swing.JLabel jLabel1;

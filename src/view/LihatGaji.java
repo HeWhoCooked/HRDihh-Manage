@@ -4,12 +4,14 @@
  */
 package view;
 
-/**
- *
- * @author stevedownes
- */
+import controller.KaryawanController;
+import Model.Pegawai;
+import utility.DataBase;
+import javax.swing.table.DefaultTableModel;
+import java.util.List;
+
 public class LihatGaji extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LihatGaji.class.getName());
 
     /**
@@ -18,32 +20,52 @@ public class LihatGaji extends javax.swing.JFrame {
     public LihatGaji() {
         initComponents();
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
-        
+
         SematkanTombolAksi();
-        
+        muatDataGaji();
+
         javax.swing.table.JTableHeader header = GajiTbl.getTableHeader();
-        
+
         header.setDefaultRenderer(new javax.swing.table.DefaultTableCellRenderer() {
             @Override
             public java.awt.Component getTableCellRendererComponent(javax.swing.JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                
+
                 setBackground(new java.awt.Color(0, 0, 0));
                 setForeground(java.awt.Color.WHITE);
                 setFont(new java.awt.Font("Roboto", java.awt.Font.BOLD, 14));
-                setHorizontalAlignment(javax.swing.SwingConstants.CENTER); 
-                
+                setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
                 return this;
             }
         });
-        
+
         header.setPreferredSize(new java.awt.Dimension(header.getPreferredSize().width, 40));
     }
-    
+
     private void SematkanTombolAksi() {
         GajiTableAction actionCell = new GajiTableAction(GajiTbl);
         GajiTbl.getColumnModel().getColumn(4).setCellRenderer(actionCell);
         GajiTbl.getColumnModel().getColumn(4).setCellEditor(actionCell);
+    }
+
+    private void muatDataGaji() {
+        DefaultTableModel model = (DefaultTableModel) GajiTbl.getModel();
+        model.setRowCount(0);
+        List<Pegawai> karyawanList = KaryawanController.daftarKaryawan();
+        int no = 1;
+        for (Pegawai p : karyawanList) {
+            // Hitung gaji bersih dengan rumus yang sama seperti di RincianGajiDialog
+            double bonusLembur = DataBase.hitungBonusLembur(p.getId());
+            double potonganAbsen = DataBase.hitungPotonganAbsen(p.getId());
+            double potonganTerlambat = DataBase.hitungPotonganTerlambat(p.getId());
+            double gajiKotor = p.hitungGaji() + bonusLembur;
+            double totalPotongan = potonganAbsen + potonganTerlambat;
+            double pajak = (gajiKotor - totalPotongan) * 0.05;
+            double gajiBersih = gajiKotor - totalPotongan - pajak;
+
+            model.addRow(new Object[]{no++, p.getNama(), p.getDepartemen().getNama(), gajiBersih, ""});
+        }
     }
 
     /**

@@ -8,6 +8,12 @@ package view;
  *
  * @author stevedownes
  */
+import controller.KaryawanController;
+import Model.Pegawai;
+import Model.Departemen;
+import javax.swing.JOptionPane;
+
+
 public class RotasiJabatan extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RotasiJabatan.class.getName());
@@ -18,6 +24,7 @@ public class RotasiJabatan extends javax.swing.JFrame {
     public RotasiJabatan() {
         initComponents();
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        isiComboDepartemen();
     }
 
     /**
@@ -102,6 +109,11 @@ public class RotasiJabatan extends javax.swing.JFrame {
         CariBT.setMaximumSize(new java.awt.Dimension(93, 39));
         CariBT.setMinimumSize(new java.awt.Dimension(93, 39));
         CariBT.setPreferredSize(new java.awt.Dimension(93, 39));
+        CariBT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CariBTActionPerformed(evt);
+            }
+        });
         jPanel4.add(CariBT, new org.netbeans.lib.awtextra.AbsoluteConstraints(1010, 320, 170, -1));
 
         TFCariNama.setBackground(new java.awt.Color(255, 255, 255));
@@ -125,34 +137,69 @@ public class RotasiJabatan extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void isiComboDepartemen() {
+        CariDeptCBox.removeAllItems();
+        // Tambahkan opsi "Semua Departemen" di awal
+        CariDeptCBox.addItem("Semua Departemen");
+        for (Departemen d : KaryawanController.daftarDepartemen()) {
+            CariDeptCBox.addItem(d.getNama());
+        }
+    }
     private void BackKwnBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackKwnBTActionPerformed
-        // TODO add your handling code here:
+        new Dashboard().setVisible(true);
+        dispose();
     }//GEN-LAST:event_BackKwnBTActionPerformed
+
+    private void CariBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CariBTActionPerformed
+        String nama = TFCariNama.getText().trim();
+        String dept = (String) CariDeptCBox.getSelectedItem();
+        if (nama.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Masukkan nama karyawan yang ingin dicari!");
+            return;
+        }
+        // Cari karyawan berdasarkan nama (dan departemen jika dipilih selain "Semua Departemen")
+        Pegawai p = null;
+        if (dept != null && !dept.equals("Semua Departemen")) {
+            // Cari berdasarkan nama dan departemen (perlu method khusus, untuk sederhana kita cari nama lalu cocokkan departemen)
+            p = KaryawanController.cariKaryawanByNama(nama);
+            if (p != null && !p.getDepartemen().getNama().equals(dept)) {
+                p = null; // tidak cocok
+            }
+        } else {
+            p = KaryawanController.cariKaryawanByNama(nama);
+        }
+        if (p != null) {
+            new EditJabatan(p.getId()).setVisible(true);
+            dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Karyawan tidak ditemukan! Periksa nama dan departemen.");
+        }
+    }//GEN-LAST:event_CariBTActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+    /* Set the Nimbus look and feel */
+    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+    /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+     */
+    try {
+        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            if ("Nimbus".equals(info.getName())) {
+                javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                break;
             }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new RotasiJabatan().setVisible(true));
+    } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
+        logger.log(java.util.logging.Level.SEVERE, null, ex);
     }
+    //</editor-fold>
+
+    /* Create and display the form */
+    java.awt.EventQueue.invokeLater(() -> new RotasiJabatan().setVisible(true));
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackKwnBT;

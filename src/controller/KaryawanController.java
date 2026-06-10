@@ -17,6 +17,10 @@ public class KaryawanController {
     public static Pegawai cariKaryawan(int id) {
         return DataBase.ambilKaryawanById(id);
     }
+    
+    public static Pegawai cariKaryawanByNama(String nama) {
+    return DataBase.cariKaryawanByNama(nama);
+}
 
     public static void tambahKaryawan(Pegawai p) {
         DataBase.tambahKaryawan(p);
