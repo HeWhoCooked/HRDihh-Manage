@@ -30,7 +30,7 @@ public class DataBase {
                 // Koneksi ke database
                 koneksi = DriverManager.getConnection(URL + DB_NAME + "?useSSL=false&serverTimezone=UTC", USER, PASS);
                 buatTabel();
-                isiDataAwal(); // akan mengisi departemen, jabatan, pengguna, dan karyawan jika kosong
+                isiDataAwal();
                 inisialisasiRekapAbsensiBulanIni();
                 inisialisasiDataCuti();
                 System.out.println("[INFO] Koneksi database berhasil.");
@@ -44,7 +44,7 @@ public class DataBase {
     private static void buatTabel() throws SQLException {
         String[] sqls = {
             "CREATE TABLE IF NOT EXISTS departemen (id INT PRIMARY KEY AUTO_INCREMENT, nama VARCHAR(100) NOT NULL)",
-            "CREATE TABLE IF NOT EXISTS jabatan (id INT PRIMARY KEY AUTO_INCREMENT, nama VARCHAR(100) NOT NULL, gaji_pokok DECIMAL(15,2), tunjangan DECIMAL(15,2))",
+            "CREATE TABLE IF NOT EXISTS jabatan (id INT PRIMARY KEY AUTO_INCREMENT, nama VARCHAR(100) NOT NULL, gaji_pokok DECIMAL(15,2), tunjangan DECIMAL(15,2), departemen_id INT, FOREIGN KEY (departemen_id) REFERENCES departemen(id))",
             "CREATE TABLE IF NOT EXISTS karyawan (id INT PRIMARY KEY AUTO_INCREMENT, nama VARCHAR(100) NOT NULL, usia INT, jenis_kelamin ENUM('L','P'), departemen_id INT, jabatan_id INT, tipe ENUM('Tetap','Magang') NOT NULL, status_aktif BOOLEAN, kuota_cuti INT, gaji_pokok DECIMAL(15,2), tunjangan DECIMAL(15,2), uang_harian DECIMAL(15,2), hari_kerja INT, FOREIGN KEY (departemen_id) REFERENCES departemen(id), FOREIGN KEY (jabatan_id) REFERENCES jabatan(id))",
             "CREATE TABLE IF NOT EXISTS histori_jabatan (id INT PRIMARY KEY AUTO_INCREMENT, karyawan_id INT, departemen_id INT, jabatan_id INT, tanggal_mulai VARCHAR(20), tanggal_selesai VARCHAR(20), FOREIGN KEY (karyawan_id) REFERENCES karyawan(id))",
             "CREATE TABLE IF NOT EXISTS cuti (id INT PRIMARY KEY AUTO_INCREMENT, karyawan_id INT, tanggal_mulai VARCHAR(20), tanggal_selesai VARCHAR(20), status ENUM('Pending','Disetujui','Ditolak'), alasan TEXT, FOREIGN KEY (karyawan_id) REFERENCES karyawan(id))",
@@ -78,35 +78,34 @@ public class DataBase {
                     + "('Human Resources'), ('Technology & Product'), ('Finance & Accounting'), "
                     + "('Marketing'), ('Sales & Business Development')");
 
-            String insertJabatan = "INSERT INTO jabatan (nama, gaji_pokok, tunjangan) VALUES "
-                    + "('HR Generalist', 5000000, 500000), "
-                    + "('Talent Acquisition Specialist', 5500000, 600000), "
-                    + "('HR Operations', 6000000, 700000), "
-                    + "('Employee Engagement', 5800000, 650000), "
-                    + "('Head of People', 15000000, 2000000), "
-                    + "('Frontend Engineer', 8000000, 1000000), "
-                    + "('Backend Engineer', 8500000, 1200000), "
-                    + "('Fullstack Engineer', 9000000, 1500000), "
-                    + "('QA Engineer', 7000000, 800000), "
-                    + "('Product Manager', 12000000, 1500000), "
-                    + "('UI/UX Designer', 8000000, 900000), "
-                    + "('CTO', 25000000, 5000000), "
-                    + "('Accountant', 6000000, 700000), "
-                    + "('Payroll Specialist', 6500000, 800000), "
-                    + "('Financial Analyst', 8000000, 1000000), "
-                    + "('CFO', 20000000, 3000000), "
-                    + "('Digital Marketer', 7000000, 800000), "
-                    + "('Content Writer', 5500000, 500000), "
-                    + "('Social Media Specialist', 6000000, 600000), "
-                    + "('SEO Specialist', 6500000, 700000), "
-                    + "('Graphic Designer', 7000000, 800000), "
-                    + "('CMO', 18000000, 2500000), "
-                    + "('SDR', 5000000, 500000), "
-                    + "('Account Executive', 7000000, 1000000), "
-                    + "('Business Development', 8000000, 1200000), "
-                    + "('Account Manager', 7500000, 1000000), "
-                    + "('Head of Sales', 18000000, 2500000)";
-
+            String insertJabatan = "INSERT INTO jabatan (nama, gaji_pokok, tunjangan, departemen_id) VALUES "
+                    + "('HR Generalist', 5000000, 500000, 1), "
+                    + "('Talent Acquisition Specialist', 5500000, 600000, 1), "
+                    + "('HR Operations', 6000000, 700000, 1), "
+                    + "('Employee Engagement', 5800000, 650000, 1), "
+                    + "('Head of People', 15000000, 2000000, 1), "
+                    + "('Frontend Engineer', 8000000, 1000000, 2), "
+                    + "('Backend Engineer', 8500000, 1200000, 2), "
+                    + "('Fullstack Engineer', 9000000, 1500000, 2), "
+                    + "('QA Engineer', 7000000, 800000, 2), "
+                    + "('Product Manager', 12000000, 1500000, 2), "
+                    + "('UI/UX Designer', 8000000, 900000, 2), "
+                    + "('CTO', 25000000, 5000000, 2), "
+                    + "('Accountant', 6000000, 700000, 3), "
+                    + "('Payroll Specialist', 6500000, 800000, 3), "
+                    + "('Financial Analyst', 8000000, 1000000, 3), "
+                    + "('CFO', 20000000, 3000000, 3), "
+                    + "('Digital Marketer', 7000000, 800000, 4), "
+                    + "('Content Writer', 5500000, 500000, 4), "
+                    + "('Social Media Specialist', 6000000, 600000, 4), "
+                    + "('SEO Specialist', 6500000, 700000, 4), "
+                    + "('Graphic Designer', 7000000, 800000, 4), "
+                    + "('CMO', 18000000, 2500000, 4), "
+                    + "('SDR', 5000000, 500000, 5), "
+                    + "('Account Executive', 7000000, 1000000, 5), "
+                    + "('Business Development', 8000000, 1200000, 5), "
+                    + "('Account Manager', 7500000, 1000000, 5), "
+                    + "('Head of Sales', 18000000, 2500000, 5)";
             koneksi.createStatement().execute(insertJabatan);
 
             koneksi.createStatement().execute("INSERT INTO pengguna (username, password, role) VALUES "
@@ -145,7 +144,6 @@ public class DataBase {
             {"Vincent Sebastian Ho", "21", "L", "4", "20", "Tetap", "6500000", "700000"},
             {"Yuwan Ranu Pratama", "20", "L", "5", "24", "Tetap", "7000000", "1000000"},
             {"Fadhil Azhar Putra", "22", "L", "2", "11", "Tetap", "8000000", "900000"},
-            // JULIAN sebagai Head of People
             {"Julian Manasye Nasyok", "23", "L", "1", "5", "Tetap", "15000000", "2000000"},
             {"Fabian Ananda Taufik", "21", "L", "4", "21", "Tetap", "7000000", "800000"},
             {"Gibran Ferdiansyah", "20", "L", "5", "26", "Tetap", "7500000", "1000000"},
@@ -199,9 +197,9 @@ public class DataBase {
                 java.util.Random rand = new java.util.Random();
                 while (rsKaryawan.next()) {
                     int id = rsKaryawan.getInt("id");
-                    int hadir = rand.nextInt(totalHariKerja + 1); // 0 hingga totalHariKerja
+                    int hadir = rand.nextInt(totalHariKerja + 1);
                     int tidakHadir = totalHariKerja - hadir;
-                    int terlambat = rand.nextInt(hadir + 1); // maksimal sebanyak hadir
+                    int terlambat = rand.nextInt(hadir + 1);
                     ps.setInt(1, id);
                     ps.setString(2, bulanIni);
                     ps.setInt(3, hadir);
@@ -226,18 +224,16 @@ public class DataBase {
             rs.next();
             int pendingCount = rs.getInt(1);
             if (pendingCount == 0) {
-                // Hapus semua cuti yang mungkin ada (opsional, agar tidak bentrok)
-                // koneksi.createStatement().execute("DELETE FROM cuti");
-
-                // Insert contoh cuti
-                String[] contoh = {
+              
+                // Insert cuti
+                String[] cuti = {
                     "INSERT INTO cuti (karyawan_id, tanggal_mulai, tanggal_selesai, status, alasan) VALUES (1, '2025-06-10', '2025-06-12', 'Pending', 'Sakit')",
                     "INSERT INTO cuti (karyawan_id, tanggal_mulai, tanggal_selesai, status, alasan) VALUES (2, '2025-06-15', '2025-06-17', 'Pending', 'Acara keluarga')",
                     "INSERT INTO cuti (karyawan_id, tanggal_mulai, tanggal_selesai, status, alasan) VALUES (3, '2025-06-20', '2025-06-22', 'Pending', 'Liburan')",
                     "INSERT INTO cuti (karyawan_id, tanggal_mulai, tanggal_selesai, status, alasan) VALUES (4, '2025-06-05', '2025-06-07', 'Pending', 'Sakit gigi')",
                     "INSERT INTO cuti (karyawan_id, tanggal_mulai, tanggal_selesai, status, alasan) VALUES (5, '2025-06-25', '2025-06-26', 'Pending', 'Urusan pribadi')"
                 };
-                for (String sql : contoh) {
+                for (String sql : cuti) {
                     koneksi.createStatement().execute(sql);
                 }
                 System.out.println("[INFO] Data contoh cuti (Pending) berhasil ditambahkan.");
@@ -249,7 +245,7 @@ public class DataBase {
         }
     }
 
-    // ========== METHOD UNTUK AUTENTIKASI DAN CRUD ==========
+    // ========== METHOD UNTUK AUTENTIKASI ==========
     public static boolean autentikasiHRD(String username, String password) {
         String sql = "SELECT * FROM pengguna WHERE username=? AND password=? AND role='HRD'";
         try (PreparedStatement ps = koneksi.prepareStatement(sql)) {
@@ -462,6 +458,22 @@ public class DataBase {
                 list.add(new Jabatan(rs.getInt("id"), rs.getString("nama"), rs.getDouble("gaji_pokok"), rs.getDouble("tunjangan")));
             }
         } catch (SQLException e) {
+        }
+        return list;
+    }
+
+    public static List<Jabatan> ambilJabatanByDepartemen(int deptId) {
+        List<Jabatan> list = new ArrayList<>();
+        String sql = "SELECT * FROM jabatan WHERE departemen_id = ?";
+        try (PreparedStatement ps = koneksi.prepareStatement(sql)) {
+            ps.setInt(1, deptId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new Jabatan(rs.getInt("id"), rs.getString("nama"),
+                        rs.getDouble("gaji_pokok"), rs.getDouble("tunjangan")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return list;
     }

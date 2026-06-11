@@ -6,7 +6,6 @@ package view;
 
 import controller.KaryawanController;
 import Model.Pegawai;
-import javax.swing.JOptionPane;
 
 public class InfoLengkap extends javax.swing.JFrame {
     private int idKaryawan;

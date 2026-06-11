@@ -54,8 +54,8 @@ public class LihatGaji extends javax.swing.JFrame {
         model.setRowCount(0);
         List<Pegawai> karyawanList = KaryawanController.daftarKaryawan();
         int no = 1;
+        java.text.DecimalFormat df = new java.text.DecimalFormat("Rp #,###");
         for (Pegawai p : karyawanList) {
-            // Hitung gaji bersih dengan rumus yang sama seperti di RincianGajiDialog
             double bonusLembur = DataBase.hitungBonusLembur(p.getId());
             double potonganAbsen = DataBase.hitungPotonganAbsen(p.getId());
             double potonganTerlambat = DataBase.hitungPotonganTerlambat(p.getId());
@@ -63,8 +63,8 @@ public class LihatGaji extends javax.swing.JFrame {
             double totalPotongan = potonganAbsen + potonganTerlambat;
             double pajak = (gajiKotor - totalPotongan) * 0.05;
             double gajiBersih = gajiKotor - totalPotongan - pajak;
-
-            model.addRow(new Object[]{no++, p.getNama(), p.getDepartemen().getNama(), gajiBersih, ""});
+            String gajiFormatted = df.format(gajiBersih);
+            model.addRow(new Object[]{no++, p.getNama(), p.getDepartemen().getNama(), gajiFormatted, ""});
         }
     }
 

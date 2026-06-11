@@ -13,6 +13,7 @@ import controller.RotasiController;
 import Model.Pegawai;
 import Model.Departemen;
 import Model.Jabatan;
+import utility.DataBase;
 import javax.swing.JOptionPane;
 import java.util.List;
 
@@ -28,10 +29,16 @@ public class EditJabatan extends javax.swing.JFrame {
         initComponents();
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         isiCombo();
+        DeptCBox.addActionListener(e -> {
+            String selectedDept = (String) DeptCBox.getSelectedItem();
+            if (selectedDept != null) {
+                filterPosisiByDepartemen(selectedDept);
+            }
+        });
     }
 
     public EditJabatan(int id) {
-        this(); 
+        this();
         this.idKaryawan = id;
         muatData();
     }
@@ -115,7 +122,7 @@ public class EditJabatan extends javax.swing.JFrame {
         LabelJK.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         LabelJK.setForeground(new java.awt.Color(0, 0, 0));
         LabelJK.setText("LabelJK");
-        jPanel4.add(LabelJK, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 160, -1, -1));
+        jPanel4.add(LabelJK, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 160, -1, -1));
 
         jLabel11.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(0, 0, 0));
@@ -125,7 +132,7 @@ public class EditJabatan extends javax.swing.JFrame {
         LabelUsia.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         LabelUsia.setForeground(new java.awt.Color(0, 0, 0));
         LabelUsia.setText("LabelUsia");
-        jPanel4.add(LabelUsia, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 250, -1, -1));
+        jPanel4.add(LabelUsia, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 260, -1, -1));
 
         jLabel9.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(0, 0, 0));
@@ -135,7 +142,7 @@ public class EditJabatan extends javax.swing.JFrame {
         LabelDept.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         LabelDept.setForeground(new java.awt.Color(0, 0, 0));
         LabelDept.setText("LabelDept");
-        jPanel4.add(LabelDept, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 350, -1, -1));
+        jPanel4.add(LabelDept, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 350, -1, -1));
 
         Panah.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         Panah.setForeground(new java.awt.Color(0, 0, 0));
@@ -150,7 +157,7 @@ public class EditJabatan extends javax.swing.JFrame {
         LabelNama.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         LabelNama.setForeground(new java.awt.Color(0, 0, 0));
         LabelNama.setText("LabelNama");
-        jPanel4.add(LabelNama, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 60, -1, -1));
+        jPanel4.add(LabelNama, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 70, -1, -1));
 
         LabelPosisi3.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         LabelPosisi3.setForeground(new java.awt.Color(0, 0, 0));
@@ -215,7 +222,7 @@ public class EditJabatan extends javax.swing.JFrame {
         LabelPosisi.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         LabelPosisi.setForeground(new java.awt.Color(0, 0, 0));
         LabelPosisi.setText("LabelPosisi");
-        jPanel4.add(LabelPosisi, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 460, -1, -1));
+        jPanel4.add(LabelPosisi, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 460, -1, -1));
 
         jPanel3.add(jPanel4);
 
@@ -225,6 +232,26 @@ public class EditJabatan extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void filterPosisiByDepartemen(String deptNama) {
+        Departemen dept = KaryawanController.daftarDepartemen().stream()
+                .filter(d -> d.getNama().equals(deptNama))
+                .findFirst().orElse(null);
+        if (dept != null) {
+            List<Jabatan> jabList = DataBase.ambilJabatanByDepartemen(dept.getId());
+            PosisiCBox.removeAllItems();
+            for (Jabatan j : jabList) {
+                PosisiCBox.addItem(j.getNama());
+            }
+        } else {
+            // fallback ke semua jabatan jika tidak ditemukan
+            List<Jabatan> allJab = KaryawanController.daftarJabatan();
+            PosisiCBox.removeAllItems();
+            for (Jabatan j : allJab) {
+                PosisiCBox.addItem(j.getNama());
+            }
+        }
+    }
 
     private void isiCombo() {
         // Department
@@ -251,6 +278,7 @@ public class EditJabatan extends javax.swing.JFrame {
             LabelDept.setText(p.getDepartemen().getNama());
             LabelPosisi.setText(p.getJabatan().getNama());
             DeptCBox.setSelectedItem(p.getDepartemen().getNama());
+            filterPosisiByDepartemen(p.getDepartemen().getNama());
             PosisiCBox.setSelectedItem(p.getJabatan().getNama());
         }
     }
