@@ -49,7 +49,6 @@ public class DataBase {
             "CREATE TABLE IF NOT EXISTS histori_jabatan (id INT PRIMARY KEY AUTO_INCREMENT, karyawan_id INT, departemen_id INT, jabatan_id INT, tanggal_mulai VARCHAR(20), tanggal_selesai VARCHAR(20), FOREIGN KEY (karyawan_id) REFERENCES karyawan(id))",
             "CREATE TABLE IF NOT EXISTS cuti (id INT PRIMARY KEY AUTO_INCREMENT, karyawan_id INT, tanggal_mulai VARCHAR(20), tanggal_selesai VARCHAR(20), status ENUM('Pending','Disetujui','Ditolak'), alasan TEXT, FOREIGN KEY (karyawan_id) REFERENCES karyawan(id))",
             "CREATE TABLE IF NOT EXISTS lembur (id INT PRIMARY KEY AUTO_INCREMENT, karyawan_id INT, tanggal VARCHAR(20), jam_lembur INT, FOREIGN KEY (karyawan_id) REFERENCES karyawan(id))",
-            "CREATE TABLE IF NOT EXISTS absensi (id INT PRIMARY KEY AUTO_INCREMENT, karyawan_id INT, tanggal VARCHAR(20), hadir BOOLEAN, terlambat BOOLEAN, FOREIGN KEY (karyawan_id) REFERENCES karyawan(id))",
             "CREATE TABLE IF NOT EXISTS pengguna (id INT PRIMARY KEY AUTO_INCREMENT, username VARCHAR(50) UNIQUE, password VARCHAR(255), role VARCHAR(20))",
             "CREATE TABLE IF NOT EXISTS rekap_absensi_bulanan (id INT PRIMARY KEY AUTO_INCREMENT, karyawan_id INT NOT NULL, bulan VARCHAR(7) NOT NULL, total_hadir INT DEFAULT 0, total_tidak_hadir INT DEFAULT 0, total_terlambat INT DEFAULT 0, FOREIGN KEY (karyawan_id) REFERENCES karyawan(id) ON DELETE CASCADE, UNIQUE KEY (karyawan_id, bulan))"
         };
@@ -224,7 +223,7 @@ public class DataBase {
             rs.next();
             int pendingCount = rs.getInt(1);
             if (pendingCount == 0) {
-              
+
                 // Insert cuti
                 String[] cuti = {
                     "INSERT INTO cuti (karyawan_id, tanggal_mulai, tanggal_selesai, status, alasan) VALUES (1, '2025-06-10', '2025-06-12', 'Pending', 'Sakit')",
@@ -679,7 +678,7 @@ public class DataBase {
             java.time.LocalDate selesai = java.time.LocalDate.parse(tanggalSelesai);
             return (int) java.time.temporal.ChronoUnit.DAYS.between(mulai, selesai) + 1;
         } catch (Exception e) {
-            return 1; // default 1 hari jika error
+            return 1;
         }
     }
 
